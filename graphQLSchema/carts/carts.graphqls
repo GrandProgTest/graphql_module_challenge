@@ -1,0 +1,39 @@
+type Cart implements AuditableEntity {
+    id: ID!
+    userId: ID!
+    status: CartStatus!
+    items: [CartItem!]!
+    totalItems: Int!
+    createdAt: String!
+    updatedAt: String!
+    checkedOutAt: String
+}
+
+type CartItem implements AuditableEntity {
+    id: ID!
+    productId: ID!
+    quantity: Int!
+    createdAt: String!
+    updatedAt: String!
+}
+
+enum CartStatus {
+    ACTIVE
+    CHECKED_OUT
+    ABANDONED
+}
+
+input AddItemToCartInput {
+    productId: ID!
+    quantity: Int!
+}
+
+extend type Query {
+    currentUserCart: Cart
+}
+
+extend type Mutation {
+    addItemToCart(input: AddItemToCartInput!): Cart!
+    updateCartItemQuantity(cartItemId: ID!, quantity: Int!): Cart!
+    removeItemFromCart(cartItemId: ID!): Cart!
+}
