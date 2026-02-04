@@ -1,10 +1,17 @@
-interface AuditableEntity {
-    id: ID!
-    createdAt: String!
-    updatedAt: String!
+type Query {
+}
+
+type Mutation {
 }
 
 enum SortDirection {
     ASC
     DESC
 }
+
+interface AuditableEntity {
+    id: ID!
+    createdAt: String!
+    updatedAt: String!
+}
+

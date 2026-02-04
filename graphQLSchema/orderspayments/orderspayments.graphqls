@@ -1,3 +1,21 @@
+enum OrderStatus {
+    PENDING
+    PAID
+    CANCELLED
+}
+
+enum PaymentStatus {
+    PENDING
+    SUCCEEDED
+    FAILED
+}
+
+enum WebhookStatus {
+    RECEIVED
+    PROCESSED
+    FAILED
+}
+
 type Order implements AuditableEntity {
     id: ID!
     userId: ID!
@@ -23,12 +41,6 @@ type OrderItem {
     quantity: Int!
 }
 
-enum OrderStatus {
-    PENDING
-    PAID
-    CANCELLED
-}
-
 type Payment {
     id: ID!
     orderId: ID!
@@ -36,12 +48,6 @@ type Payment {
     status: PaymentStatus!
     amount: Float!
     createdAt: String!
-}
-
-enum PaymentStatus {
-    PENDING
-    SUCCEEDED
-    FAILED
 }
 
 type PaymentIntentResponse {
@@ -65,12 +71,6 @@ type StripeWebhook {
     processedAt: String
 }
 
-enum WebhookStatus {
-    RECEIVED
-    PROCESSED
-    FAILED
-}
-
 type Discount {
     id: ID!
     code: String!
@@ -79,13 +79,6 @@ type Discount {
     endDate: String!
     isActive: Boolean!
     createdAt: String!
-}
-
-input CreateDiscountInput {
-    code: String!
-    percentage: Int!
-    startDate: String!
-    endDate: String!
 }
 
 type Address {
@@ -98,6 +91,13 @@ type Address {
     postalCode: String!
     isDefault: Boolean!
     createdAt: String!
+}
+
+input CreateDiscountInput {
+    code: String!
+    percentage: Int!
+    startDate: String!
+    endDate: String!
 }
 
 input CreateAddressInput {
@@ -139,5 +139,5 @@ extend type Mutation {
     setDefaultAddress(id: ID!): Address!
 
     createDiscount(input: CreateDiscountInput!): Discount!
-    deactivateDiscount(id: ID!): Discount!
+    deactivateDiscount(id: ID!): Discord!
 }

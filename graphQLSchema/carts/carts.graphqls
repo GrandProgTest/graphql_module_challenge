@@ -1,3 +1,9 @@
+enum CartStatus {
+    ACTIVE
+    CHECKED_OUT
+    ABANDONED
+}
+
 type Cart implements AuditableEntity {
     id: ID!
     userId: ID!
@@ -17,21 +23,17 @@ type CartItem implements AuditableEntity {
     updatedAt: String!
 }
 
-enum CartStatus {
-    ACTIVE
-    CHECKED_OUT
-    ABANDONED
-}
-
 input AddItemToCartInput {
     productId: ID!
     quantity: Int!
 }
 
+# Carts Queries
 extend type Query {
     currentUserCart: Cart
 }
 
+# Carts Mutations
 extend type Mutation {
     addItemToCart(input: AddItemToCartInput!): Cart!
     updateCartItemQuantity(cartItemId: ID!, quantity: Int!): Cart!
