@@ -1,0 +1,23 @@
+type Query {
+    order(id: ID!): Order @auth
+    orders(userId: ID): [Order!]! @auth
+    discount(code: String!): Discount
+    activeDiscounts: [Discount!]!
+    addresses(userId: ID!): [Address!]! @auth
+    address(id: ID!): Address @auth
+}
+
+type Mutation {
+    createOrderFromCart(userId: ID!, addressId: ID!): Order! @auth
+    applyDiscountToOrder(orderId: ID!, discountCode: String!): Order! @auth
+    removeDiscountFromOrder(orderId: ID!): Order! @auth
+    cancelOrder(orderId: ID!): Order! @auth
+    createPaymentIntent(orderId: ID!): PaymentIntentResponse! @auth
+    handleStripeWebhook(payload: String!): WebhookResponse!
+    createAddress(userId: ID!, input: CreateAddressInput!): Address! @auth
+    updateAddress(id: ID!, input: CreateAddressInput!): Address! @auth
+    deleteAddress(id: ID!): Boolean! @auth
+    setDefaultAddress(userId: ID!, addressId: ID!): Address! @auth
+    createDiscount(input: CreateDiscountInput!): Discount! @auth(role: "ROLE_MANAGER")
+    deactivateDiscount(id: ID!): Discount! @auth(role: "ROLE_MANAGER")
+}

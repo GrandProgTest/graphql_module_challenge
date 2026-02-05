@@ -1,0 +1,15 @@
+input CreateDiscountInput {
+    code: String!
+    percentage: Int!
+    startDate: String!
+    endDate: String!
+}
+
+input CreateAddressInput {
+    street: String!
+    city: String!
+    state: String
+    country: String!
+    postalCode: String!
+    isDefault: Boolean
+}

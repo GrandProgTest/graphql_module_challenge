@@ -1,0 +1,17 @@
+enum OrderStatus {
+    PENDING
+    PAID
+    CANCELLED
+}
+
+enum PaymentStatus {
+    PENDING
+    SUCCEEDED
+    FAILED
+}
+
+enum WebhookStatus {
+    RECEIVED
+    PROCESSED
+    FAILED
+}

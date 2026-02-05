@@ -1,0 +1,4 @@
+type Subscription {
+    orderCreated(userId: ID): Order! @auth
+    orderStatusUpdated(userId: ID, orderId: ID): Order! @auth
+}

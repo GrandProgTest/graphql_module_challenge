@@ -1,0 +1,76 @@
+type Order implements AuditableEntity {
+    id: ID!
+    userId: ID!
+    cartId: ID
+    addressId: ID!
+    discountId: ID
+    status: OrderStatus!
+    totalAmount: Float!
+    discountAmount: Float!
+    items: [OrderItem!]!
+    address: Address!
+    discount: Discount
+    payment: Payment
+    createdAt: String!
+    updatedAt: String!
+}
+
+type OrderItem {
+    id: ID!
+    orderId: ID!
+    productId: ID!
+    priceAtPurchase: Float!
+    quantity: Int!
+}
+
+type Payment {
+    id: ID!
+    orderId: ID!
+    stripePaymentIntentId: String!
+    status: PaymentStatus!
+    amount: Float!
+    createdAt: String!
+}
+
+type PaymentIntentResponse {
+    clientSecret: String!
+    paymentIntentId: String!
+}
+
+type WebhookResponse {
+    status: String!
+    message: String
+}
+
+type StripeWebhook {
+    id: ID!
+    paymentId: ID
+    stripeEventId: String!
+    eventType: String!
+    payload: String!
+    status: WebhookStatus!
+    receivedAt: String!
+    processedAt: String
+}
+
+type Discount {
+    id: ID!
+    code: String!
+    percentage: Int!
+    startDate: String!
+    endDate: String!
+    isActive: Boolean!
+    createdAt: String!
+}
+
+type Address {
+    id: ID!
+    userId: ID!
+    street: String!
+    city: String!
+    state: String
+    country: String!
+    postalCode: String!
+    isDefault: Boolean!
+    createdAt: String!
+}

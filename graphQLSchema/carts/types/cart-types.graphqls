@@ -1,0 +1,18 @@
+type Cart implements AuditableEntity {
+    id: ID!
+    userId: ID!
+    status: CartStatus!
+    items: [CartItem!]!
+    totalItems: Int!
+    createdAt: String!
+    updatedAt: String!
+    checkedOutAt: String
+}
+
+type CartItem implements AuditableEntity {
+    id: ID!
+    productId: ID!
+    quantity: Int!
+    createdAt: String!
+    updatedAt: String!
+}
