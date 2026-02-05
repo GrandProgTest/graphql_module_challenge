@@ -30,12 +30,18 @@ input AddItemToCartInput {
 
 # Carts Queries
 extend type Query {
-    currentUserCart: Cart
+    cart(userId: ID!): Cart @auth
 }
 
 # Carts Mutations
 extend type Mutation {
-    addItemToCart(input: AddItemToCartInput!): Cart!
-    updateCartItemQuantity(cartItemId: ID!, quantity: Int!): Cart!
-    removeItemFromCart(cartItemId: ID!): Cart!
+    addItemToCart(userId: ID!, input: AddItemToCartInput!): Cart! @auth
+    updateCartItemQuantity(userId: ID!, cartItemId: ID!, quantity: Int!): Cart! @auth
+    removeItemFromCart(userId: ID!, cartItemId: ID!): Cart! @auth
+    updateCartStatus(cartId: ID!, status: CartStatus!): Cart! @auth
+}
+
+# Carts Subscriptions
+extend type Subscription {
+    cartStatusChanged(cartId: ID!): Cart! @auth
 }

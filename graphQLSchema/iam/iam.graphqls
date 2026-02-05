@@ -48,8 +48,8 @@ input ResetPasswordInput {
 
 # IAM Queries
 extend type Query {
-    currentUser: User
-    user(id: ID!): User
+    user(id: ID!): User @auth
+    users: [User!]! @auth(role: "ROLE_MANAGER")
 }
 
 # IAM Mutations

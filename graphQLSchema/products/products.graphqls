@@ -49,6 +49,12 @@ type Category {
     createdAt: String!
 }
 
+type LowStockAlert {
+    product: Product!
+    currentStock: Int!
+    alertedUserIds: [ID!]!
+}
+
 input ProductFilterInput {
     categoryId: ID
     minPrice: Float
@@ -69,6 +75,7 @@ input CreateProductInput {
     price: Float!
     stock: Int!
     categoryIds: [ID!]
+    images: [Upload!]
 }
 
 input UpdateProductInput {
@@ -88,7 +95,7 @@ input UpdateCategoryInput {
 }
 
 # Products Queries
-type Query {
+extend type Query {
     product(id: ID!): Product
     products(
         page: Int = 0
@@ -96,28 +103,32 @@ type Query {
         filters: ProductFilterInput
         sort: ProductSortInput
     ): ProductPage!
-
     category(id: ID!): Category
     categories: [Category!]!
-
-    isProductLiked(productId: ID!): Boolean!
+    isProductLiked(productId: ID!): Boolean! @auth
 }
 
 # Products Mutations
-type Mutation {
-    createProduct(input: CreateProductInput!): Product!
-    updateProduct(id: ID!, input: UpdateProductInput!): Product!
-    deleteProduct(id: ID!): Boolean!
-    activateProduct(id: ID!): Product!
-    deactivateProduct(id: ID!): Product!
-    assignCategoryToProduct(productId: ID!, categoryId: ID!): Product!
-    uploadProductImage(productId: ID!, imageUrl: String!, isPrimary: Boolean): ProductImage!
-    deleteProductImage(imageId: ID!): Boolean!
+extend type Mutation {
+    createProduct(input: CreateProductInput!): Product! @auth(role: "ROLE_MANAGER")
+    updateProduct(id: ID!, input: UpdateProductInput!): Product! @auth(role: "ROLE_MANAGER")
+    deleteProduct(id: ID!): Boolean! @auth(role: "ROLE_MANAGER")
+    activateProduct(id: ID!): Product! @auth(role: "ROLE_MANAGER")
+    deactivateProduct(id: ID!): Product! @auth(role: "ROLE_MANAGER")
+    assignCategoryToProduct(productId: ID!, categoryId: ID!): Product! @auth(role: "ROLE_MANAGER")
+    uploadProductImage(productId: ID!, file: Upload!, isPrimary: Boolean): ProductImage! @auth(role: "ROLE_MANAGER")
+    deleteProductImage(imageId: ID!): Boolean! @auth(role: "ROLE_MANAGER")
+    createCategory(input: CreateCategoryInput!): Category! @auth(role: "ROLE_MANAGER")
+    updateCategory(id: ID!, input: UpdateCategoryInput!): Category! @auth(role: "ROLE_MANAGER")
+    deleteCategory(id: ID!): Boolean! @auth(role: "ROLE_MANAGER")
+    likeProduct(productId: ID!): Boolean! @auth(role: "ROLE_CLIENT")
+    unlikeProduct(productId: ID!): Boolean! @auth(role: "ROLE_CLIENT")
+    decreaseProductStock(productId: ID!, quantity: Int!): Product! @auth
+}
 
-    createCategory(input: CreateCategoryInput!): Category!
-    updateCategory(id: ID!, input: UpdateCategoryInput!): Category!
-    deleteCategory(id: ID!): Boolean!
-
-    likeProduct(productId: ID!): Boolean!
-    unlikeProduct(productId: ID!): Boolean!
+# Products Subscriptions
+extend type Subscription {
+    productStockUpdated(productId: ID): Product! @auth
+    lowStockAlertForLikedProduct(userId: ID!): Product! @auth
+    lowStockAlert: LowStockAlert! @auth(role: "ROLE_MANAGER")
 }
