@@ -1,8 +1,8 @@
-type Query {
+extend type Query {
     cart(userId: ID!): Cart @auth
 }
 
-type Mutation {
+extend type Mutation {
     addItemToCart(userId: ID!, input: AddItemToCartInput!): Cart! @auth
     updateCartItemQuantity(userId: ID!, cartItemId: ID!, quantity: Int!): Cart! @auth
     removeItemFromCart(userId: ID!, cartItemId: ID!): Cart! @auth

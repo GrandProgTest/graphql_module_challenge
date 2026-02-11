@@ -1,4 +1,4 @@
-type Query {
+extend type Query {
     # If a manager requests orders, they can see all orders, otherwise users can see only their own
     orders(userId: ID): [Order!]! @auth
     discount(code: String!): Discount
@@ -8,7 +8,7 @@ type Query {
     address(id: ID!): Address @auth
 }
 
-type Mutation {
+extend type Mutation {
     # Modifying orders or creating carts should be done only by clients (Managers could also do it, but for simplicity we restrict it to clients)
     createOrderFromCart(userId: ID!, addressId: ID!): Order! @auth(role: "ROLE_CLIENT")
     applyDiscountToOrder(orderId: ID!, discountCode: String!): Order! @auth(role: "ROLE_CLIENT")

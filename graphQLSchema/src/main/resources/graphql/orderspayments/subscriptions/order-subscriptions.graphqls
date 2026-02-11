@@ -1,4 +1,4 @@
-type Subscription {
+extend type Subscription {
     # Once order is created/ updated, user is notified
     orderCreated(userId: ID): Order! @auth
     orderStatusUpdated(userId: ID, orderId: ID): Order! @auth
