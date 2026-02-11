@@ -1,3 +1,18 @@
+scalar Upload
+
+directive @auth(role: String) on FIELD_DEFINITION
+
+interface AuditableEntity {
+    id: ID!
+    createdAt: String!
+    updatedAt: String!
+}
+
+enum SortDirection {
+    ASC
+    DESC
+}
+
 type Query {
 }
 

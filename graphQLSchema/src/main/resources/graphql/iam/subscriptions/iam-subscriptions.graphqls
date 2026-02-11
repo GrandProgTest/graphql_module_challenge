@@ -1,4 +1,0 @@
-extend type Subscription {
-    # Notification for when someone changes their password (Security measure)
-    passwordChangedAlert(userId: ID!): PasswordChangeNotification! @auth
-}

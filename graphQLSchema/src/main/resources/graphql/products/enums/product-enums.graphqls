@@ -1,7 +1,0 @@
-enum ProductSortField {
-    NAME
-    PRICE
-    CREATED_AT
-    STOCK
-    LIKE_COUNT
-}

@@ -1,5 +1,0 @@
-extend type Subscription {
-    productStockUpdated(productId: ID): Product! @auth
-    lowStockAlertForLikedProduct(userId: ID!): Product! @auth
-    lowStockAlert: LowStockAlert! @auth(role: "ROLE_MANAGER")
-}

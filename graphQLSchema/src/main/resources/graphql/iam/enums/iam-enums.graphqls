@@ -1,4 +1,0 @@
-enum UserRole {
-    ROLE_CLIENT
-    ROLE_MANAGER
-}

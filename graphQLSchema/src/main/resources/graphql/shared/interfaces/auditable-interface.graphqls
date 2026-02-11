@@ -1,5 +1,0 @@
-interface AuditableEntity {
-    id: ID!
-    createdAt: String!
-    updatedAt: String!
-}

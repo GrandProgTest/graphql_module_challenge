@@ -1,3 +1,0 @@
-extend type Subscription {
-    cartStatusChanged(cartId: ID!): Cart! @auth
-}
