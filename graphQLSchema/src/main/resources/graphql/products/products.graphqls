@@ -45,7 +45,7 @@ input UpdateCategoryInput {
     name: String!
 }
 
-type Query {
+extend type Query {
     product(id: ID!): Product
     products(
         page: Int = 0
@@ -58,7 +58,7 @@ type Query {
     isProductLiked(productId: ID!): Boolean! @auth
 }
 
-type Mutation {
+extend type Mutation {
     createProduct(input: CreateProductInput!): Product! @auth(role: "ROLE_MANAGER")
     updateProduct(id: ID!, input: UpdateProductInput!): Product! @auth(role: "ROLE_MANAGER")
     deleteProduct(id: ID!): Boolean! @auth(role: "ROLE_MANAGER")
