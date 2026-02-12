@@ -1,0 +1,30 @@
+scalar Upload
+scalar DateTime
+
+directive @auth(role: String) on FIELD_DEFINITION
+
+interface AuditableEntity {
+    id: ID!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+}
+
+type Money {
+    amount: Int!
+    currency: String!
+}
+
+enum SortDirection {
+    ASC
+    DESC
+}
+
+type Query {
+}
+
+type Mutation {
+}
+
+type Subscription {
+}
+

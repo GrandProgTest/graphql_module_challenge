@@ -1,0 +1,102 @@
+enum UserRole {
+    ROLE_CLIENT
+    ROLE_MANAGER
+}
+
+type User implements AuditableEntity {
+    id: ID!
+    username: String!
+    email: String!
+    role: UserRole!
+    isActive: Boolean!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+}
+
+type Address {
+    id: ID!
+    userId: ID!
+    street: String!
+    city: String!
+    state: String
+    country: String!
+    postalCode: String!
+    isDefault: Boolean!
+    createdAt: String!
+}
+
+type AuthPayload {
+    id: ID!
+    username: String!
+    email: String!
+    accessToken: String!
+    refreshToken: String!
+}
+
+type ForgotPasswordResponse {
+    message: String!
+}
+
+type ResetPasswordResponse {
+    message: String!
+}
+
+type PasswordChangeNotification {
+    userId: ID!
+    username: String!
+    email: String!
+    changedAt: DateTime!
+    ipAddress: String
+    device: String
+}
+
+input SignUpInput {
+    username: String!
+    email: String!
+    password: String!
+    role: UserRole
+}
+
+input SignInInput {
+    username: String!
+    password: String!
+}
+
+input ResetPasswordInput {
+    token: String!
+    newPassword: String!
+}
+
+input CreateAddressInput {
+    street: String!
+    city: String!
+    state: String
+    country: String!
+    postalCode: String!
+    isDefault: Boolean
+}
+
+extend type Query {
+    user(id: ID!): User @auth
+    users: [User!]! @auth(role: "ROLE_MANAGER")
+    addresses(userId: ID!): [Address!]! @auth
+    address(id: ID!): Address @auth
+}
+
+extend type Mutation {
+    signUp(input: SignUpInput!): AuthPayload!
+    signIn(input: SignInInput!): AuthPayload!
+    signOut: Boolean!
+    forgotPassword(email: String!): ForgotPasswordResponse!
+    resetPassword(input: ResetPasswordInput!): ResetPasswordResponse!
+    refreshToken(refreshToken: String!): AuthPayload!
+    createAddress(userId: ID!, input: CreateAddressInput!): Address! @auth
+    updateAddress(id: ID!, input: CreateAddressInput!): Address! @auth
+    deleteAddress(id: ID!): Boolean! @auth
+    setDefaultAddress(userId: ID!, addressId: ID!): Address! @auth
+}
+
+extend type Subscription {
+    # Notification for when someone changes their password (Security measure)
+    passwordChangedAlert(userId: ID!): PasswordChangeNotification! @auth
+}
