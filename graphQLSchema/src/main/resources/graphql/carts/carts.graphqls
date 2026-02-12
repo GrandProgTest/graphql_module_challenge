@@ -10,17 +10,17 @@ type Cart implements AuditableEntity {
     status: CartStatus!
     items: [CartItem!]!
     totalItems: Int!
-    createdAt: String!
-    updatedAt: String!
-    checkedOutAt: String
+    createdAt: DateTime!
+    updatedAt: DateTime!
+    checkedOutAt: DateTime
 }
 
 type CartItem implements AuditableEntity {
     id: ID!
     productId: ID!
     quantity: Int!
-    createdAt: String!
-    updatedAt: String!
+    createdAt: DateTime!
+    updatedAt: DateTime!
 }
 
 input AddItemToCartInput {

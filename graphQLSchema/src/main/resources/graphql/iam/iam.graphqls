@@ -7,10 +7,22 @@ type User implements AuditableEntity {
     id: ID!
     username: String!
     email: String!
-    role: String!
+    role: UserRole!
     isActive: Boolean!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+}
+
+type Address {
+    id: ID!
+    userId: ID!
+    street: String!
+    city: String!
+    state: String
+    country: String!
+    postalCode: String!
+    isDefault: Boolean!
     createdAt: String!
-    updatedAt: String!
 }
 
 type AuthPayload {
@@ -33,7 +45,7 @@ type PasswordChangeNotification {
     userId: ID!
     username: String!
     email: String!
-    changedAt: String!
+    changedAt: DateTime!
     ipAddress: String
     device: String
 }
@@ -42,7 +54,7 @@ input SignUpInput {
     username: String!
     email: String!
     password: String!
-    role: String
+    role: UserRole
 }
 
 input SignInInput {
@@ -55,9 +67,20 @@ input ResetPasswordInput {
     newPassword: String!
 }
 
+input CreateAddressInput {
+    street: String!
+    city: String!
+    state: String
+    country: String!
+    postalCode: String!
+    isDefault: Boolean
+}
+
 extend type Query {
     user(id: ID!): User @auth
     users: [User!]! @auth(role: "ROLE_MANAGER")
+    addresses(userId: ID!): [Address!]! @auth
+    address(id: ID!): Address @auth
 }
 
 extend type Mutation {
@@ -67,10 +90,13 @@ extend type Mutation {
     forgotPassword(email: String!): ForgotPasswordResponse!
     resetPassword(input: ResetPasswordInput!): ResetPasswordResponse!
     refreshToken(refreshToken: String!): AuthPayload!
+    createAddress(userId: ID!, input: CreateAddressInput!): Address! @auth
+    updateAddress(id: ID!, input: CreateAddressInput!): Address! @auth
+    deleteAddress(id: ID!): Boolean! @auth
+    setDefaultAddress(userId: ID!, addressId: ID!): Address! @auth
 }
 
 extend type Subscription {
     # Notification for when someone changes their password (Security measure)
     passwordChangedAlert(userId: ID!): PasswordChangeNotification! @auth
 }
-

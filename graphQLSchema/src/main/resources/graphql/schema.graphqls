@@ -1,11 +1,17 @@
 scalar Upload
+scalar DateTime
 
 directive @auth(role: String) on FIELD_DEFINITION
 
 interface AuditableEntity {
     id: ID!
-    createdAt: String!
-    updatedAt: String!
+    createdAt: DateTime!
+    updatedAt: DateTime!
+}
+
+type Money {
+    amount: Int!
+    currency: String!
 }
 
 enum SortDirection {

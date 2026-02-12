@@ -8,8 +8,8 @@ enum ProductSortField {
 
 input ProductFilterInput {
     categoryId: ID
-    minPrice: Float
-    maxPrice: Float
+    minPrice: Int
+    maxPrice: Int
     isActive: Boolean
     search: String
     inStock: Boolean
@@ -23,7 +23,7 @@ input ProductSortInput {
 input CreateProductInput {
     name: String!
     description: String
-    price: Float!
+    price: Int!
     stock: Int!
     categoryIds: [ID!]
     images: [Upload!]
@@ -32,7 +32,7 @@ input CreateProductInput {
 input UpdateProductInput {
     name: String
     description: String
-    price: Float
+    price: Int
     stock: Int
     isActive: Boolean
 }
@@ -79,7 +79,7 @@ type Product implements AuditableEntity {
     id: ID!
     name: String!
     description: String
-    price: Float!
+    price: Money!
     stock: Int!
     isActive: Boolean!
     categoryIds: [ID!]!
@@ -90,8 +90,8 @@ type Product implements AuditableEntity {
     isInStock: Boolean!
     categories: [Category!]!
     primaryImage: ProductImage
-    createdAt: String!
-    updatedAt: String!
+    createdAt: DateTime!
+    updatedAt: DateTime!
 }
 
 type ProductPage {
@@ -109,13 +109,13 @@ type ProductImage {
     productId: ID!
     imageUrl: String!
     isPrimary: Boolean!
-    createdAt: String!
+    createdAt: DateTime!
 }
 
 type Category {
     id: ID!
     name: String!
-    createdAt: String!
+    createdAt: DateTime!
 }
 
 type LowStockAlert {

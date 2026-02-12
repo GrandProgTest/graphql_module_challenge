@@ -23,21 +23,21 @@ type Order implements AuditableEntity {
     addressId: ID!
     discountId: ID
     status: OrderStatus!
-    totalAmount: Float!
-    discountAmount: Float!
+    totalAmount: Money!
+    discountAmount: Money!
     items: [OrderItem!]!
     address: Address!
     discount: Discount
     payment: Payment
-    createdAt: String!
-    updatedAt: String!
+    createdAt: DateTime!
+    updatedAt: DateTime!
 }
 
 type OrderItem {
     id: ID!
     orderId: ID!
     productId: ID!
-    priceAtPurchase: Float!
+    priceAtPurchase: Money!
     quantity: Int!
 }
 
@@ -46,8 +46,8 @@ type Payment {
     orderId: ID!
     stripePaymentIntentId: String!
     status: PaymentStatus!
-    amount: Float!
-    createdAt: String!
+    amount: Money!
+    createdAt: DateTime!
 }
 
 type PaymentIntentResponse {
@@ -67,46 +67,25 @@ type StripeWebhook {
     eventType: String!
     payload: String!
     status: WebhookStatus!
-    receivedAt: String!
-    processedAt: String
+    receivedAt: DateTime!
+    processedAt: DateTime
 }
 
 type Discount {
     id: ID!
     code: String!
     percentage: Int!
-    startDate: String!
-    endDate: String!
+    startDate: DateTime!
+    endDate: DateTime!
     isActive: Boolean!
-    createdAt: String!
-}
-
-type Address {
-    id: ID!
-    userId: ID!
-    street: String!
-    city: String!
-    state: String
-    country: String!
-    postalCode: String!
-    isDefault: Boolean!
-    createdAt: String!
+    createdAt: DateTime!
 }
 
 input CreateDiscountInput {
     code: String!
     percentage: Int!
-    startDate: String!
-    endDate: String!
-}
-
-input CreateAddressInput {
-    street: String!
-    city: String!
-    state: String
-    country: String!
-    postalCode: String!
-    isDefault: Boolean
+    startDate: DateTime!
+    endDate: DateTime!
 }
 
 extend type Query {
@@ -115,8 +94,6 @@ extend type Query {
     discount(code: String!): Discount
     # This query is managed also by logic business to fetch active discounts
     activeDiscounts: [Discount!]!
-    addresses(userId: ID!): [Address!]! @auth
-    address(id: ID!): Address @auth
 }
 
 extend type Mutation {
@@ -126,10 +103,7 @@ extend type Mutation {
     removeDiscountFromOrder(orderId: ID!): Order! @auth(role: "ROLE_CLIENT")
     cancelOrder(orderId: ID!): Order! @auth
     createPaymentIntent(orderId: ID!): PaymentIntentResponse! @auth
-    handleStripeWebhook(payload: String!, signature: String!, timestamp: String!): WebhookResponse! # No auth needed, signature is verified internally    createAddress(userId: ID!, input: CreateAddressInput!): Address! @auth
-    updateAddress(id: ID!, input: CreateAddressInput!): Address! @auth
-    deleteAddress(id: ID!): Boolean! @auth
-    setDefaultAddress(userId: ID!, addressId: ID!): Address! @auth
+    handleStripeWebhook(payload: String!, signature: String!, timestamp: String!): WebhookResponse! # No auth needed, signature is verified internally
     createDiscount(input: CreateDiscountInput!): Discount! @auth(role: "ROLE_MANAGER")
     deactivateDiscount(id: ID!): Discount! @auth(role: "ROLE_MANAGER")
 }
